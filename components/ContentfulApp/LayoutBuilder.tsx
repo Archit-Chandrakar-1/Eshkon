@@ -18,7 +18,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { RootState } from '@/store';
+import { RootState, useAppSelector } from '@/store';
 import {
   addComponent,
   removeComponent,
@@ -109,13 +109,12 @@ function SortableComponent({ component, onRemove }: SortableComponentProps) {
       </div>
     </div>
   );
+  
 }
 
 export default function LayoutBuilder() {
   const dispatch = useDispatch();
-  const { components, historyIndex, history, isDirty, lastSaved } = useSelector(
-    (state: RootState) => state.layout
-  );
+  const { components, historyIndex, history, isDirty, lastSaved } = useAppSelector((state: any) => state.layout);
   
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   

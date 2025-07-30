@@ -26,8 +26,8 @@ export const getPageContent = async (slug: string): Promise<PageContent | null> 
   `;
 
   try {
-    const response: ContentfulResponse<{ pageCollection: { items: PageContent[] } }> = await client.request(query, { slug });
-    return response.data.pageCollection.items[0] || null;
+    const response = await client.request(query, { slug }) as { pageCollection: { items: PageContent[] } };
+    return response.pageCollection.items[0] || null;
   } catch (error) {
     console.error('Error fetching page content:', error);
     return null;
@@ -57,8 +57,8 @@ export const getHeroContent = async (id: string): Promise<HeroBlockContent | nul
   `;
 
   try {
-    const response: ContentfulResponse<{ heroBlock: HeroBlockContent }> = await client.request(query, { id });
-    return response.data.heroBlock || null;
+    const response = await client.request(query, { id }) as { heroBlock: HeroBlockContent };
+    return response.heroBlock || null;
   } catch (error) {
     console.error('Error fetching hero content:', error);
     return null;
@@ -88,8 +88,8 @@ export const getTwoColumnContent = async (id: string): Promise<TwoColumnContent 
   `;
 
   try {
-    const response: ContentfulResponse<{ twoColumnBlock: TwoColumnContent }> = await client.request(query, { id });
-    return response.data.twoColumnBlock || null;
+    const response = await client.request(query, { id }) as { twoColumnBlock: TwoColumnContent };
+    return response.twoColumnBlock || null;
   } catch (error) {
     console.error('Error fetching two column content:', error);
     return null;
@@ -116,8 +116,8 @@ export const getImageGridContent = async (id: string): Promise<ImageGridContent 
   `;
 
   try {
-    const response: ContentfulResponse<{ imageGridBlock: ImageGridContent }> = await client.request(query, { id });
-    return response.data.imageGridBlock || null;
+    const response = await client.request(query, { id }) as { imageGridBlock: ImageGridContent };
+    return response.imageGridBlock || null;
   } catch (error) {
     console.error('Error fetching image grid content:', error);
     return null;
@@ -141,8 +141,8 @@ export const getAllPages = async (): Promise<PageContent[]> => {
   `;
 
   try {
-    const response: ContentfulResponse<{ pageCollection: { items: PageContent[] } }> = await client.request(query);
-    return response.data.pageCollection.items;
+    const response = await client.request(query) as { pageCollection: { items: PageContent[] } };
+    return response.pageCollection.items;
   } catch (error) {
     console.error('Error fetching all pages:', error);
     return [];

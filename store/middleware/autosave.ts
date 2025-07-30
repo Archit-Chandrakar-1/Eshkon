@@ -4,12 +4,12 @@ import { markSaved } from '../slices/layoutSlice';
 
 let autosaveTimeout: NodeJS.Timeout | null = null;
 
-export const autosaveMiddleware: Middleware<{}, RootState> = (store) => (next) => (action) => {
+export const autosaveMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: any) => {
   const result = next(action);
   
   // Only trigger autosave for layout actions
   if (action.type.startsWith('layout/') && action.type !== 'layout/markSaved') {
-    const state = store.getState();
+    const state = store.getState() as any;
     
     if (state.layout.isDirty) {
       // Clear existing timeout

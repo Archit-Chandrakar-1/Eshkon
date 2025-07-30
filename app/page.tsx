@@ -5,9 +5,9 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Content Builder Eshkon</h1>
+        <h1 className={styles.title}>Content Builder Platform</h1>
         <p className={styles.subtitle}>
-          Build dynamic pages with drag-and-drop components powered by Contentful - Archit Chandrakar
+          Build dynamic pages with drag-and-drop components powered by Contentful
         </p>
       </header>
       

@@ -12,7 +12,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, layoutReducer);
 
-export const store = configureStore({
+export const store: ReturnType<typeof configureStore> = configureStore({
   reducer: {
     layout: persistedReducer,
   },
@@ -28,3 +28,6 @@ export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

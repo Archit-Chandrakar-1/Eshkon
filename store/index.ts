@@ -4,18 +4,21 @@ import storage from 'redux-persist/lib/storage';
 import layoutReducer from './slices/layoutSlice';
 import { autosaveMiddleware } from './middleware/autosave';
 
+
 const persistConfig = {
   key: 'contentful-layout-builder',
   storage,
   whitelist: ['layout'],
 };
 
-const persistedReducer = persistReducer(persistConfig, layoutReducer);
 
-export const store: ReturnType<typeof configureStore> = configureStore({
-  reducer: {
-    layout: persistedReducer,
-  },
+const rootReducer = {
+  layout: persistReducer(persistConfig, layoutReducer),
+};
+
+
+const store = configureStore({
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -24,10 +27,11 @@ export const store: ReturnType<typeof configureStore> = configureStore({
     }).concat(autosaveMiddleware),
 });
 
-export const persistor = persistStore(store);
+const persistor = persistStore(store);
+type RootState = {
+  layout: ReturnType<typeof layoutReducer> & { _persist?: any };
+};
+type AppDispatch = typeof store.dispatch;
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
-import { TypedUseSelectorHook, useSelector } from 'react-redux';
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export { store, persistor };
+export type { RootState, AppDispatch };

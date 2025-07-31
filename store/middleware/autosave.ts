@@ -1,15 +1,15 @@
-import { Middleware } from '@reduxjs/toolkit';
+import { Middleware, AnyAction } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { markSaved } from '../slices/layoutSlice';
 
 let autosaveTimeout: NodeJS.Timeout | null = null;
 
-export const autosaveMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: any) => {
+export const autosaveMiddleware: Middleware = (store) => (next) => (action) => {
   const result = next(action);
   
   // Only trigger autosave for layout actions
-  if (action.type.startsWith('layout/') && action.type !== 'layout/markSaved') {
-    const state = store.getState() as any;
+  if ((action as AnyAction).type.startsWith('layout/') && (action as AnyAction).type !== 'layout/markSaved') {
+    const state = store.getState();
     
     if (state.layout.isDirty) {
       // Clear existing timeout

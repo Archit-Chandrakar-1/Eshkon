@@ -18,7 +18,7 @@ import {
   useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { RootState, useAppSelector } from '@/store';
+import { RootState } from '@/store';
 import {
   addComponent,
   removeComponent,
@@ -109,12 +109,14 @@ function SortableComponent({ component, onRemove }: SortableComponentProps) {
       </div>
     </div>
   );
-  
 }
 
 export default function LayoutBuilder() {
   const dispatch = useDispatch();
-  const { components, historyIndex, history, isDirty, lastSaved } = useAppSelector((state: any) => state.layout);
+  // Pulls components array and other state (assumes all types are correct in RootState)
+  const { components, historyIndex, history, isDirty, lastSaved } = useSelector(
+    (state: RootState) => state.layout
+  );
   
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
   
@@ -282,7 +284,7 @@ export default function LayoutBuilder() {
 
           <div className={styles.canvas}>
             <SortableContext
-              items={components.map((c: LayoutComponent) => c.id)}
+              items={components.map((c: LayoutComponent) => c.id)}  
               strategy={verticalListSortingStrategy}
             >
               <div className={`${styles.dropZone} ${draggedItem ? styles.dragOver : ''}`}>

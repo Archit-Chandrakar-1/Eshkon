@@ -1,5 +1,10 @@
 import { GraphQLClient } from 'graphql-request';
-import { ContentfulResponse, PageContent, HeroBlockContent, TwoColumnContent, ImageGridContent } from '@/types/contentful';
+import {
+  PageContent,
+  HeroBlockContent,
+  TwoColumnContent,
+  ImageGridContent,
+} from '@/types/contentful';
 
 const endpoint = `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`;
 
@@ -9,6 +14,7 @@ const client = new GraphQLClient(endpoint, {
   },
 });
 
+// Get a single page by slug
 export const getPageContent = async (slug: string): Promise<PageContent | null> => {
   const query = `
     query GetPage($slug: String!) {
@@ -24,9 +30,8 @@ export const getPageContent = async (slug: string): Promise<PageContent | null> 
       }
     }
   `;
-
   try {
-    const response = await client.request(query, { slug }) as { pageCollection: { items: PageContent[] } };
+    const response: { pageCollection: { items: PageContent[] } } = await client.request(query, { slug });
     return response.pageCollection.items[0] || null;
   } catch (error) {
     console.error('Error fetching page content:', error);
@@ -34,6 +39,7 @@ export const getPageContent = async (slug: string): Promise<PageContent | null> 
   }
 };
 
+// Get a hero block by ID
 export const getHeroContent = async (id: string): Promise<HeroBlockContent | null> => {
   const query = `
     query GetHeroBlock($id: String!) {
@@ -55,9 +61,8 @@ export const getHeroContent = async (id: string): Promise<HeroBlockContent | nul
       }
     }
   `;
-
   try {
-    const response = await client.request(query, { id }) as { heroBlock: HeroBlockContent };
+    const response: { heroBlock: HeroBlockContent | null } = await client.request(query, { id });
     return response.heroBlock || null;
   } catch (error) {
     console.error('Error fetching hero content:', error);
@@ -65,6 +70,7 @@ export const getHeroContent = async (id: string): Promise<HeroBlockContent | nul
   }
 };
 
+// Get twoColumn block by ID
 export const getTwoColumnContent = async (id: string): Promise<TwoColumnContent | null> => {
   const query = `
     query GetTwoColumnBlock($id: String!) {
@@ -86,9 +92,8 @@ export const getTwoColumnContent = async (id: string): Promise<TwoColumnContent 
       }
     }
   `;
-
   try {
-    const response = await client.request(query, { id }) as { twoColumnBlock: TwoColumnContent };
+    const response: { twoColumnBlock: TwoColumnContent | null } = await client.request(query, { id });
     return response.twoColumnBlock || null;
   } catch (error) {
     console.error('Error fetching two column content:', error);
@@ -96,6 +101,7 @@ export const getTwoColumnContent = async (id: string): Promise<TwoColumnContent 
   }
 };
 
+// Get imageGrid block by ID
 export const getImageGridContent = async (id: string): Promise<ImageGridContent | null> => {
   const query = `
     query GetImageGridBlock($id: String!) {
@@ -114,9 +120,8 @@ export const getImageGridContent = async (id: string): Promise<ImageGridContent 
       }
     }
   `;
-
   try {
-    const response = await client.request(query, { id }) as { imageGridBlock: ImageGridContent };
+    const response: { imageGridBlock: ImageGridContent | null } = await client.request(query, { id });
     return response.imageGridBlock || null;
   } catch (error) {
     console.error('Error fetching image grid content:', error);
@@ -124,6 +129,7 @@ export const getImageGridContent = async (id: string): Promise<ImageGridContent 
   }
 };
 
+// Get all pages
 export const getAllPages = async (): Promise<PageContent[]> => {
   const query = `
     query GetAllPages {
@@ -139,9 +145,8 @@ export const getAllPages = async (): Promise<PageContent[]> => {
       }
     }
   `;
-
   try {
-    const response = await client.request(query) as { pageCollection: { items: PageContent[] } };
+    const response: { pageCollection: { items: PageContent[] } } = await client.request(query);
     return response.pageCollection.items;
   } catch (error) {
     console.error('Error fetching all pages:', error);
